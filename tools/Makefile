@@ -8,6 +8,6 @@ LEVEL=..
 #
 # List all of the subdirectories that we will compile.
 #
-DIRS=sample
+DIRS=hw1
 
 include $(LEVEL)/Makefile.common
