@@ -22,9 +22,9 @@
                         'm4_pattern_forbid' => 1,
                         'include' => 1,
                         'AC_DEFUN_ONCE' => 1,
-                        'm4_include' => 1,
                         'LLVM_CONFIG_PROJECT' => 1,
                         'AC_DEFUN' => 1,
+                        'm4_include' => 1,
                         '_m4_warn' => 1,
                         'AU_DEFUN' => 1
                       }

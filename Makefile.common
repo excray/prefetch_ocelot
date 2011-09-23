@@ -7,7 +7,7 @@ LLVM_SRC_ROOT = /home/vivek/Programs/llvm-2.9
 
 # Set this variable to the top level directory where LLVM was built
 # (this is *not* the same as OBJ_ROOT as defined in LLVM's Makefile.config).
-LLVM_OBJ_ROOT = /home/vivek/Programs/llvm
+LLVM_OBJ_ROOT = /home/vivek/Programs/llvm-debug
 
 # Set the directory root of this project's source files
 PROJ_SRC_ROOT := $(subst //,/,/home/vivek/583/hw1)

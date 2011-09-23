@@ -5,7 +5,7 @@ AC_INIT([[[Homework1]]],[[[x.xx]]],[bugs@yourdomain])
 
 dnl Identify where LLVM source tree is
 LLVM_SRC_ROOT="/home/vivek/Programs/llvm-2.9"
-LLVM_OBJ_ROOT="/home/vivek/Programs/llvm"
+LLVM_OBJ_ROOT="/home/vivek/Programs/llvm-debug"
 
 dnl Find absolute paths to LLVM source and object trees
 LLVM_ABS_SRC_ROOT="`cd $srcdir ; cd $LLVM_SRC_ROOT ; pwd`"
