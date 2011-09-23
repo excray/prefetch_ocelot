@@ -8,7 +8,7 @@ main:                                   # @main
 # BB#0:                                 # %entry
 	subl	$44, %esp
 .Ltmp0:
-	movl	$4, 12(%esp)
+	movl	$17, 12(%esp)
 	movl	$EdgeProfCounters, 8(%esp)
 	movl	$0, 4(%esp)
 	movl	$0, (%esp)
@@ -27,9 +27,57 @@ main:                                   # @main
 	addl	%eax, 24(%esp)
 	calll	_Z1Av
 	movl	%eax, 24(%esp)
+	testl	%eax, %eax
+	jle	.LBB0_2
+# BB#1:                                 # %bb
+	incl	EdgeProfCounters+4
+	movl	$.L.str1, (%esp)
+	calll	printf
+	incl	EdgeProfCounters+12
+	jmp	.LBB0_5
+.LBB0_2:                                # %bb1
+	incl	EdgeProfCounters+8
+	cmpl	$0, 32(%esp)
+	jle	.LBB0_4
+# BB#3:                                 # %bb2
+	incl	EdgeProfCounters+16
+	movl	$.L.str2, (%esp)
+	calll	printf
+	incl	EdgeProfCounters+24
+	jmp	.LBB0_5
+.LBB0_4:                                # %bb3
+	incl	EdgeProfCounters+20
+	movl	$.L.str3, (%esp)
+	calll	printf
+	incl	EdgeProfCounters+28
+.LBB0_5:                                # %bb4
+	movl	28(%esp), %eax
+	cmpl	$2, %eax
+	je	.LBB0_8
+# BB#6:                                 # %bb4
+	cmpl	$1, %eax
+	jne	.LBB0_9
+# BB#7:                                 # %bb5
+	incl	EdgeProfCounters+36
+	movl	$.L.str4, (%esp)
+	calll	puts
+	incl	EdgeProfCounters+44
+	jmp	.LBB0_10
+.LBB0_8:                                # %bb6
+	incl	EdgeProfCounters+40
+	movl	$.L.str5, (%esp)
+	calll	puts
+	incl	EdgeProfCounters+48
+	jmp	.LBB0_10
+.LBB0_9:                                # %bb7
+	incl	EdgeProfCounters+32
+	movl	$.L.str6, (%esp)
+	calll	puts
+	incl	EdgeProfCounters+52
+.LBB0_10:                               # %bb8
 	movl	$0, 36(%esp)
 	movl	$0, 40(%esp)
-	incl	EdgeProfCounters+4
+	incl	EdgeProfCounters+56
 	movl	40(%esp), %eax
 	addl	$44, %esp
 	ret
@@ -43,10 +91,10 @@ main:                                   # @main
 _Z1Av:                                  # @_Z1Av
 # BB#0:                                 # %entry
 	subl	$8, %esp
-	incl	EdgeProfCounters+8
+	incl	EdgeProfCounters+60
 	movl	$3, (%esp)
 	movl	$3, 4(%esp)
-	incl	EdgeProfCounters+12
+	incl	EdgeProfCounters+64
 	movl	4(%esp), %eax
 	addl	$8, %esp
 	ret
@@ -59,9 +107,39 @@ _Z1Av:                                  # @_Z1Av
 	.asciz	 "In Main"
 	.size	.L.str, 8
 
+	.type	.L.str1,@object         # @.str1
+.L.str1:
+	.asciz	 "hey"
+	.size	.L.str1, 4
+
+	.type	.L.str2,@object         # @.str2
+.L.str2:
+	.asciz	 "hoo"
+	.size	.L.str2, 4
+
+	.type	.L.str3,@object         # @.str3
+.L.str3:
+	.asciz	 "gheer"
+	.size	.L.str3, 6
+
+	.type	.L.str4,@object         # @.str4
+.L.str4:
+	.asciz	 "case 1"
+	.size	.L.str4, 7
+
+	.type	.L.str5,@object         # @.str5
+.L.str5:
+	.asciz	 "case 2"
+	.size	.L.str5, 7
+
+	.type	.L.str6,@object         # @.str6
+.L.str6:
+	.asciz	 "case d"
+	.size	.L.str6, 7
+
 	.type	EdgeProfCounters,@object # @EdgeProfCounters
 	.local	EdgeProfCounters        # @EdgeProfCounters
-	.comm	EdgeProfCounters,16,4
+	.comm	EdgeProfCounters,68,16
 	.section	.eh_frame,"a",@progbits
 .LEH_frame0:
 .Lsection_eh_frame0:

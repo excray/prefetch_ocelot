@@ -1,0 +1,29 @@
+digraph "CFG for 'main' function" {
+	label="CFG for 'main' function";
+
+	Node0xa2d0c68 [shape=record,label="{entry:\l  %retval = alloca i32\l  %0 = alloca i32\l  %a = alloca i32\l  %b = alloca i32\l  %c = alloca i32\l  %\"alloca point\" = bitcast i32 0 to i32\l  %1 = call i32 @puts(i8* getelementptr inbounds ([8 x i8]* @.str, i32 0, i32 0))\l  store i32 10, i32* %b, align 4\l  store i32 10, i32* %c, align 4\l  %2 = load i32* %b, align 4\l  %3 = load i32* %c, align 4\l  %4 = add nsw i32 %2, %3\l  store i32 %4, i32* %a, align 4\l  %5 = load i32* %c, align 4\l  %6 = load i32* %a, align 4\l  %7 = add nsw i32 %5, %6\l  store i32 %7, i32* %b, align 4\l  %8 = load i32* %a, align 4\l  %9 = load i32* %b, align 4\l  %10 = add nsw i32 %8, %9\l  %11 = load i32* %c, align 4\l  %12 = add nsw i32 %10, %11\l  store i32 %12, i32* %c, align 4\l  %13 = call i32 @_Z1Av() nounwind\l  store i32 %13, i32* %c, align 4\l  %14 = load i32* %c, align 4\l  %15 = icmp sgt i32 %14, 0\l  br i1 %15, label %bb, label %bb1\l|{<s0>T|<s1>F}}"];
+	Node0xa2d0c68:s0 -> Node0xa2d04d8;
+	Node0xa2d0c68:s1 -> Node0xa2d0038;
+	Node0xa2d04d8 [shape=record,label="{bb:                                               \l  %16 = call i32 (i8*, ...)* @printf(i8* noalias getelementptr inbounds ([4 x i8]* @.str1, i32 0, i32 0))\l  br label %bb4\l}"];
+	Node0xa2d04d8 -> Node0xa2cddd0;
+	Node0xa2d0038 [shape=record,label="{bb1:                                              \l  %17 = load i32* %a, align 4\l  %18 = icmp sgt i32 %17, 0\l  br i1 %18, label %bb2, label %bb3\l|{<s0>T|<s1>F}}"];
+	Node0xa2d0038:s0 -> Node0xa2d0068;
+	Node0xa2d0038:s1 -> Node0xa2cdda0;
+	Node0xa2d0068 [shape=record,label="{bb2:                                              \l  %19 = call i32 (i8*, ...)* @printf(i8* noalias getelementptr inbounds ([4 x i8]* @.str2, i32 0, i32 0))\l  br label %bb4\l}"];
+	Node0xa2d0068 -> Node0xa2cddd0;
+	Node0xa2cdda0 [shape=record,label="{bb3:                                              \l  %20 = call i32 (i8*, ...)* @printf(i8* noalias getelementptr inbounds ([6 x i8]* @.str3, i32 0, i32 0))\l  br label %bb4\l}"];
+	Node0xa2cdda0 -> Node0xa2cddd0;
+	Node0xa2cddd0 [shape=record,label="{bb4:                                              \l  %21 = load i32* %b, align 4\l  switch i32 %21, label %bb7 [\l    i32 1, label %bb5\l    i32 2, label %bb6\l  ]\l|{<s0>def|<s1>1|<s2>2}}"];
+	Node0xa2cddd0:s0 -> Node0xa2cf4e8;
+	Node0xa2cddd0:s1 -> Node0xa2cf488;
+	Node0xa2cddd0:s2 -> Node0xa2cf4b8;
+	Node0xa2cf488 [shape=record,label="{bb5:                                              \l  %22 = call i32 @puts(i8* getelementptr inbounds ([7 x i8]* @.str4, i32 0, i32 0))\l  br label %bb8\l}"];
+	Node0xa2cf488 -> Node0xa2cf518;
+	Node0xa2cf4b8 [shape=record,label="{bb6:                                              \l  %23 = call i32 @puts(i8* getelementptr inbounds ([7 x i8]* @.str5, i32 0, i32 0))\l  br label %bb8\l}"];
+	Node0xa2cf4b8 -> Node0xa2cf518;
+	Node0xa2cf4e8 [shape=record,label="{bb7:                                              \l  %24 = call i32 @puts(i8* getelementptr inbounds ([7 x i8]* @.str6, i32 0, i32 0))\l  br label %bb8\l}"];
+	Node0xa2cf4e8 -> Node0xa2cf518;
+	Node0xa2cf518 [shape=record,label="{bb8:                                              \l  store i32 0, i32* %0, align 4\l  %25 = load i32* %0, align 4\l  store i32 %25, i32* %retval, align 4\l  br label %return\l}"];
+	Node0xa2cf518 -> Node0xa2cf548;
+	Node0xa2cf548 [shape=record,label="{return:                                           \l  %retval9 = load i32* %retval\l  ret i32 %retval9\l}"];
+}

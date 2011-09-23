@@ -22,21 +22,27 @@ int main()
 
     if( c > 0 )
     {
+        printf("hey");
     }
     else if (a > 0)
     {
+        printf("hoo");
     }
     else
     {
+        printf("gheer");
     }
 
     switch(b)
     {
         case 1:
+            printf("case 1\n");
             break;
         case 2:
+            printf("case 2\n");
             break;
         default:
+            printf("case d\n");
             break;
     }
 
