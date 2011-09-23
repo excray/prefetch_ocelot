@@ -5,7 +5,7 @@ int A();
 int main()
 {
     
-/*    printf("In Main\n");
+    printf("In Main\n");
     int a, b, c;
 
     b = 10;
@@ -38,7 +38,7 @@ int main()
             break;
         default:
             break;
-    }*/
+    }
 
     return 0;
 }

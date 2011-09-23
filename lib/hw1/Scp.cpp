@@ -28,25 +28,29 @@ namespace {
             double totalDynOpsCount;
 
         }DynOps; 
-        
+
         DynOps d;
         ProfileInfo* PI;
 
-        statComp() : FunctionPass(ID) {
+        ofstream fName;
+
+        statComp() : FunctionPass(ID), fName("benchmark.opcstats") {
             //d = {0};
         }
         virtual bool runOnFunction(Function &F) {
+
+            errs()<<F.getName();
             PI = &getAnalysis<ProfileInfo>();
 
-            /*int *p, arrSize;
+            int *p, arrSize;
 
-            d = {0};
+            d = {"",0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
             d.funcName = F.getName();
 
-            cout << d.funcName;*/
+            errs() << d.funcName;
 
-/*            for(Function::iterator b = F.begin(), be = F.end(); b != be; ++b) {
+            for(Function::iterator b = F.begin(), be = F.end(); b != be; ++b) {
                 for(BasicBlock::iterator i = b->begin(), ie = b->end(); i != ie; i++){
 
                     bool otherInst = true;
@@ -96,17 +100,24 @@ namespace {
                     d.totalDynOpsCount += PI->getExecutionCount(b);
 
                 }
-            }*/
-            //WriteToFile( d );
+            }
+            WriteToFile( d );
+
             return false; //return true if you modified the code
         }
 
+        // We don't modify the program, so we preserve all analyses
+        virtual void getAnalysisUsage(AnalysisUsage &AU) const {
+            AU.addRequired<ProfileInfo>();
+            AU.setPreservesAll();
+        }
+
+
         void WriteToFile( const DynOps& d )
         {
-            
-            printf("Opening File");
 
-            ofstream fName("benchmark.opcstats");
+            errs()<<"Opening File";
+
 
             static bool firstTimeWrite = true;
 
@@ -117,14 +128,11 @@ namespace {
                 {
                     firstTimeWrite = false;
                     //Wirte Header
-                    fName << "FuncName \t DynOpCount \t %IALU \t %FALU \t %MEM \t %BRANCH \t %OTHER " <<endl; 
+                    fName << "FuncName\tDynOpCount\t%IALU\t%FALU\t%MEM\t%BRANCH\t%OTHER" <<endl; 
                 }
-                else
-                {  
-                    fName << d.funcName << "\t" << d.totalDynOpsCount << "\t" << d.intAddCount * 100 / d.totalDynOpsCount << "\t"
-                        << d.floatAddCount * 100 / d.totalDynOpsCount <<"\t" << d.memCount * 100 / d.totalDynOpsCount <<"\t"
-                        << d.branchCount * 100 / d.totalDynOpsCount << "\t" << d.otherInstCount * 100 / d.totalDynOpsCount << endl; 
-                }
+                fName << d.funcName << "\t" << d.totalDynOpsCount << "\t" << d.intAddCount * 100 / d.totalDynOpsCount << "\t"
+                    << d.floatAddCount * 100 / d.totalDynOpsCount <<"\t" << d.memCount * 100 / d.totalDynOpsCount <<"\t"
+                    << d.branchCount * 100 / d.totalDynOpsCount << "\t" << d.otherInstCount * 100 / d.totalDynOpsCount << endl; 
             }
             else
             {
