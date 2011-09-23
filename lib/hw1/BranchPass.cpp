@@ -2,7 +2,6 @@
 #include "llvm/Function.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Analysis/ProfileInfo.h"
-#include "llvm/Analysis/BranchProbabilityInfo.h"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
