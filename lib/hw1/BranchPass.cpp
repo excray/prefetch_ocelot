@@ -12,6 +12,7 @@ using namespace llvm;
 
 #define MAX(a, b) { return a > b? a : (b); } 
 namespace {
+
     struct BranchPass: public FunctionPass {
         static char ID;
 
@@ -20,17 +21,21 @@ namespace {
         typedef struct _BranchFreq
         {
             string FuncName;
-            double maxFreq;
-            double totalFreq;
             double DynBranchCount;
+            double bias[5];
+
 
             _BranchFreq()
             {
                 FuncName = "";
-                maxFreq = 0.0;
-                totalFreq = 0.0;
                 DynBranchCount = 0.0;
+                bias[0]=0.0;
+                bias[1]=0.0;
+                bias[2]=0.0;
+                bias[3]=0.0;
+                bias[4]=0.0;
             }
+
         }BranchFreq;
 
         typedef map<BasicBlock*, BranchFreq> BranchInfo;
@@ -51,59 +56,56 @@ namespace {
 
             d.FuncName = F.getName();
 
-            errs()<<d.FuncName<<"\n";
+            // errs()<<d.FuncName<<"\n";
             int block1 = 0;
             int block2 = 0;
             int blockCount=0;
+        
+            int biasCount = 0;
+            double totalCount = 0;
 
             for(Function::iterator src = F.begin(), srcEnd = F.end(); src != srcEnd ; src++, block1++){
-                
+
                 block2 = block1;
-                
+                double maxFreq = 0.0;
+                double branchCnt = 0.0;
+
                 for(Function::iterator dest = src ;  dest != srcEnd ; dest++, block2++){
-                    
+
 
                     ProfileInfo::Edge e = ProfileInfo::getEdge(&*src, &*dest);
 
 
                     double v = PI->getEdgeWeight( e );
 
-                    
 
-                    if ( v != ProfileInfo::MissingValue )
-                    { 
+                    if ( v != ProfileInfo::MissingValue  )
+                    {
+                        errs()<<d.FuncName
+                            <<" Edge From "<<block1<<" to "<<block2<<" "<<v<<"\n"; 
 
+                        maxFreq =  maxFreq > v? maxFreq : v;
+                        branchCnt += v;
+                        totalCount += v;
 
-                        errs()<<"Found edge between "<<block1<<" and "<<block2<<" with weight "<<v<<" With max val "<<ProfileInfo::MissingValue<<"\n";
-                        bItr = branchInfo.find(&*src);
-
-                        if( bItr != branchInfo.end())
-                        {
-                            BranchFreq& d = bItr->second;
-
-                            d.maxFreq =  d.maxFreq> v? d.maxFreq : v;
-                            d.totalFreq += v;
-
-                        }
-                        else
-                        {
-
-                            d.maxFreq = v;
-                            d.totalFreq = v;
-
-                            branchInfo.insert(pair<BasicBlock*, BranchFreq>(&*src, d)); 
-                        }
                     }
+                }
 
-                    //for ( BasicBlock::iterator j = i + 1; j != ie; j++ )
-                    //{
-                    //} 
+                if( branchCnt != 0 ) 
+                { 
+                    double percentRange = maxFreq * 100.0 / branchCnt;
 
-
+                    if ( percentRange >= 50.0 )
+                    {
+                     unsigned int bucket = static_cast<unsigned int>(( percentRange - 50.0) / 10.0);
+                     if ( bucket == 5 ) bucket--;
+                     d.bias[bucket] += maxFreq;
+                     d.DynBranchCount += branchCnt;
+                    }
                 }
             }
 
-            errs()<<"The block cnt "<<blockCount<<"\n";
+            errs()<<"The block cnt "<<totalCount<<"\n";
             WriteToFile( d );
             return false; //return true if you modified the code
         }
@@ -126,9 +128,12 @@ namespace {
                     fName << "FuncName\tDynBrCount\t%50-59\t%60-69\t%70-79\t%80-89\t%90-100" <<endl; 
                 }
 
+                fName << d.FuncName <<"\t"<<d.DynBranchCount<<"\t"<<d.bias[0]<<"\t"<<d.bias[1]<<"\t"<<d.bias[2]
+                    <<"\t"<<d.bias[3]<<"\t"<<d.bias[4]<<endl;
 
-                double biasPercent = d.maxFreq *100 / d.totalFreq;
-                errs()<<"Bias Percent "<<biasPercent<<"\n";
+
+                //double biasPercent = d.maxFreq *100 / d.totalFreq;
+                //errs()<<"Bias Percent "<<biasPercent<<"\n";
 
             }
             else

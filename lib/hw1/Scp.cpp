@@ -19,7 +19,6 @@ namespace {
         typedef struct DynOp
         {
             string funcName;
-            double dynOpCount;
             double intAddCount;
             double floatAddCount;
             double branchCount;
@@ -39,16 +38,16 @@ namespace {
         }
         virtual bool runOnFunction(Function &F) {
 
-            errs()<<F.getName();
+            //errs()<<F.getName()<<"\n";
             PI = &getAnalysis<ProfileInfo>();
 
             int *p, arrSize;
 
-            d = {"",0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+            d = {"",0.0,0.0,0.0,0.0,0.0,0.0};
 
             d.funcName = F.getName();
 
-            errs() << d.funcName;
+            //errs() << d.funcName;
 
             for(Function::iterator b = F.begin(), be = F.end(); b != be; ++b) {
                 for(BasicBlock::iterator i = b->begin(), ie = b->end(); i != ie; i++){
@@ -101,6 +100,18 @@ namespace {
 
                 }
             }
+
+            if ( d.totalDynOpsCount <= 0 )
+            {
+                //set everything to zero
+                d.totalDynOpsCount = 0;
+                d.intAddCount = 0;
+                d.floatAddCount = 0;
+                d.memCount = 0;
+                d.branchCount = 0;
+                d.otherInstCount = 0;
+            }
+
             WriteToFile( d );
 
             return false; //return true if you modified the code
@@ -116,12 +127,17 @@ namespace {
         void WriteToFile( const DynOps& d )
         {
 
-            errs()<<"Opening File";
+            //errs()<<"Opening File";
 
 
             static bool firstTimeWrite = true;
 
+            double percent = 1.0;
 
+            if ( d.totalDynOpsCount > 0)
+            { 
+                percent =  percent;
+            }
             if ( fName.is_open())
             {
                 if ( firstTimeWrite )
@@ -130,9 +146,9 @@ namespace {
                     //Wirte Header
                     fName << "FuncName\tDynOpCount\t%IALU\t%FALU\t%MEM\t%BRANCH\t%OTHER" <<endl; 
                 }
-                fName << d.funcName << "\t" << d.totalDynOpsCount << "\t" << d.intAddCount * 100 / d.totalDynOpsCount << "\t"
-                    << d.floatAddCount * 100 / d.totalDynOpsCount <<"\t" << d.memCount * 100 / d.totalDynOpsCount <<"\t"
-                    << d.branchCount * 100 / d.totalDynOpsCount << "\t" << d.otherInstCount * 100 / d.totalDynOpsCount << endl; 
+                fName << d.funcName << "\t" << d.totalDynOpsCount << "\t" << d.intAddCount * percent << "\t"
+                    << d.floatAddCount * percent <<"\t" << d.memCount * percent <<"\t"
+                    << d.branchCount * percent << "\t" << d.otherInstCount * percent << endl; 
             }
             else
             {
