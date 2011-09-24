@@ -52,13 +52,13 @@ namespace {
                 Instruction* inst = pp->first;
                 unsigned int loadId = LI->InstToIdMap[inst];
 
-                errs()<<"LoadId "<<loadId<<" Alias "<<nItr->second<<"\n";
+                //errs()<<"LoadId "<<loadId<<" Alias "<<nItr->second<<"\n";
                 
                 idToAliasCount[loadId] += nItr->second;
 
                 nItr++;
             }
-            errs()<<"End of Numerator \n";            
+            //errs()<<"End of Numerator \n";            
 
             IDtoAliasItr idToAliasItr = idToAliasCount.begin();
 
@@ -71,7 +71,7 @@ namespace {
                 double execCount =  PI->getExecutionCount( bb );
                 unsigned int loadId = idToAliasItr->first;
 
-                errs()<<"LoadId "<<loadId<<" Alias "<<execCount<<"\n";
+                //errs()<<"LoadId "<<loadId<<" Alias "<<execCount<<"\n";
                 
   
                 idTotalMap[ loadId ] = execCount;

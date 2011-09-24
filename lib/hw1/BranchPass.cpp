@@ -60,7 +60,7 @@ namespace {
             int block1 = 0;
             int block2 = 0;
             int blockCount=0;
-        
+
             int biasCount = 0;
             double totalCount = 0;
 
@@ -81,8 +81,8 @@ namespace {
 
                     if ( v != ProfileInfo::MissingValue  )
                     {
-                        errs()<<d.FuncName
-                            <<" Edge From "<<block1<<" to "<<block2<<" "<<v<<"\n"; 
+//                        errs()<<d.FuncName
+  //                          <<" Edge From "<<block1<<" to "<<block2<<" "<<v<<"\n"; 
 
                         maxFreq =  maxFreq > v? maxFreq : v;
                         branchCnt += v;
@@ -97,15 +97,15 @@ namespace {
 
                     if ( percentRange >= 50.0 )
                     {
-                     unsigned int bucket = static_cast<unsigned int>(( percentRange - 50.0) / 10.0);
-                     if ( bucket == 5 ) bucket--;
-                     d.bias[bucket] += maxFreq;
-                     d.DynBranchCount += branchCnt;
+                        unsigned int bucket = static_cast<unsigned int>(( percentRange - 50.0) / 10.0);
+                        if ( bucket == 5 ) bucket--;
+                        d.bias[bucket] += maxFreq;
+                        d.DynBranchCount += branchCnt;
                     }
                 }
             }
 
-            errs()<<"The block cnt "<<totalCount<<"\n";
+            //errs()<<"The block cnt "<<totalCount<<"\n";
             WriteToFile( d );
             return false; //return true if you modified the code
         }
@@ -113,7 +113,7 @@ namespace {
         void WriteToFile( const BranchFreq& d )
         {
 
-            printf("Opening File");
+            //printf("Opening File");
 
 
             static bool firstTimeWrite = true;
@@ -138,7 +138,7 @@ namespace {
             }
             else
             {
-                cout<<"Failure: Unable to open file benchmark.opcstats"<<endl;
+                errs()<<"Failure: Unable to open file benchmark.brstats\n";
             }
         }
         // We don't modify the program, so we preserve all analyses

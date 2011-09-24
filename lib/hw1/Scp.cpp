@@ -152,7 +152,7 @@ namespace {
             }
             else
             {
-                cout<<"Failure: Unable to open file benchmark.opcstats"<<endl;
+                errs()<<"Failure: Unable to open file benchmark.opcstats\n";
             }
         }
     };
