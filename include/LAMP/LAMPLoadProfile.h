@@ -12,6 +12,7 @@
 //===----------------------------------------------------------------------===//
 #ifndef LAMPLOADPROFILE_H
 #define LAMPLOADPROFILE_H
+#include "llvm/Analysis/LoopPass.h"
 
 namespace llvm {
 

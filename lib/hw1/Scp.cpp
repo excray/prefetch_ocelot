@@ -136,7 +136,7 @@ namespace {
 
             if ( d.totalDynOpsCount > 0)
             { 
-                percent =  percent;
+                percent =  100 / d.totalDynOpsCount;
             }
             if ( fName.is_open())
             {
